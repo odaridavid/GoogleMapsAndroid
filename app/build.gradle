@@ -20,6 +20,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "google_maps_key", "${project.hasProperty("MAPS_KEY_RELEASE") ? MAPS_KEY_RELEASE : System.getenv("MAPS_KEY_RELEASE")}"
         }
         debug{
             resValue "string", "google_maps_key", "${project.hasProperty("MAPS_KEY") ? MAPS_KEY : System.getenv("MAPS_KEY")}"
