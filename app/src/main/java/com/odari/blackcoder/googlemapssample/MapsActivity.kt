@@ -8,6 +8,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -36,13 +37,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        val currentLocation = LocationManager().getLatLng()
+        val currentLocation = LatLng(37.7510, -97.8220)
         val zoomLevel = 16f
 
         //Move Cameras
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel))
         //Add Markers
         map.addMarker(MarkerOptions().position(currentLocation).title("Home"))
+
+        //Click Listeners
+        setMapOnLongClick(map)
+        setMapPoiClick(map)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -70,5 +75,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             else -> super.onOptionsItemSelected(item)
         }
+
+    private fun setMapOnLongClick(map: GoogleMap) {
+        map.setOnMapLongClickListener { latlng ->
+            val snippet = "${latlng.latitude.toFloat()} ${latlng.longitude.toFloat()}"
+            map.addMarker(
+                MarkerOptions().position(latlng)
+                    .title("Pinned")
+                    .snippet(snippet)
+            )
+        }
+    }
+
+    private fun setMapPoiClick(map: GoogleMap) {
+        map.setOnPoiClickListener {poi->
+          val poiMarker=  map.addMarker(
+                MarkerOptions().position(poi.latLng)
+                    .title(poi.name)
+                    .snippet(poi.placeId)
+            )
+            poiMarker.showInfoWindow()
+        }
+
+    }
 }
 
