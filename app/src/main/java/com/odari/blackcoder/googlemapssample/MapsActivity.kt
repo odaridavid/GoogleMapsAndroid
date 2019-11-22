@@ -1,6 +1,8 @@
 package com.odari.blackcoder.googlemapssample
 
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -9,9 +11,12 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    val TAG = this.javaClass.simpleName
 
     private lateinit var map: GoogleMap
 
@@ -48,6 +53,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //Click Listeners
         setMapOnLongClick(map)
         setMapPoiClick(map)
+
+        //Style Map
+        setMapStyle(map)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -88,8 +96,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setMapPoiClick(map: GoogleMap) {
-        map.setOnPoiClickListener {poi->
-          val poiMarker=  map.addMarker(
+        map.setOnPoiClickListener { poi ->
+            val poiMarker = map.addMarker(
                 MarkerOptions().position(poi.latLng)
                     .title(poi.name)
                     .snippet(poi.placeId)
@@ -97,6 +105,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             poiMarker.showInfoWindow()
         }
 
+    }
+
+    private fun setMapStyle(map: GoogleMap) {
+        try {
+            map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+        } catch (e: Resources.NotFoundException) {
+            Log.e(TAG, "$e")
+        }
     }
 }
 
