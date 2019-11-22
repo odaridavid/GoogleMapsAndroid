@@ -8,5 +8,5 @@ My Google Maps Playground
 
 ## Screenshots
 
-<img src="art/art.png" alt="screenshot" width="200px"/>
-<img src="art/art1.png" alt="screenshot" width="200px"/>
+|<img src="art/art.png" alt="screenshot" width="200px"/>|<img src="art/art1.png" alt="screenshot" width="200px"/>|
+|---|---|
